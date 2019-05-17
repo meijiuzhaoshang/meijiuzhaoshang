@@ -83,7 +83,10 @@ public class EncryptionUtil {
             //创建加密器
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-            return Base64Util.base64Enc(cipher.doFinal(msg.getBytes()));
+            String s = Base64Util.base64Enc(cipher.doFinal(msg.getBytes()));
+            String replace = s.replace("/", "_");
+            String replace1 = replace.replace("=", "");
+            return replace1;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,13 +95,15 @@ public class EncryptionUtil {
 
     //解密
     public static String AESDec(String key, String msg) {
+        String replace = msg.replace("_", "/");
+
         //将字符串的秘钥转换为秘钥对象
         SecretKeySpec keySpec = new SecretKeySpec(Base64Util.base64Dec(key), "AES");
         try {
             //创建加密器
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, keySpec);
-            return new String(cipher.doFinal(Base64Util.base64Dec(msg)), "UTF-8");
+            return new String(cipher.doFinal(Base64Util.base64Dec(replace)), "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }

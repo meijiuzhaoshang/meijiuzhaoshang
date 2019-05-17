@@ -113,10 +113,10 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
                 userVo.setPhone(userRegister.getPhone());
                 userVo.setEmail(userRegister.getEmail());
                 userVo.setUserTypeNum(userRegister.getUserType());
-                if (userRegister.getUserType()==1){
+                if (userRegister.getUserType() == 1) {
                     //1 表示厂家 2 表示经销商
                     userVo.setUserType("厂家");
-                }else if(userRegister.getUserType()==2) {
+                } else if (userRegister.getUserType() == 2) {
                     userVo.setUserType("经销商");
                 }
                 userVo.setCreatetime(userRegister.getCreatetime());
@@ -141,6 +141,14 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
             }
         }*/
         //删除Redis
+        String json = jedisUtil.getStr(token);
+        UserRegister userRegister = JSON.parseObject(json, UserRegister.class);
+        UserVo userVo = new UserVo();
+        userVo.setId(userRegister.getId());
+        userVo.setUserName(userRegister.getUserName());
+        userVo.setPhone(userRegister.getPhone());
+        userVo.setEmail(userRegister.getEmail());
+        userVo.setUserTypeNum(userRegister.getUserType());
         jedisUtil.delKey(token);
         TokenVO tokenVO = TokenUtil.parseToken(token);
         jedisUtil.delKey("user:" + tokenVO.getContent());
@@ -148,7 +156,7 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
         Cookie cookie = new Cookie("usertoken", "");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        return ResultUtil.setOK("注销成功");
+        return ResultUtil.exec(true, "注销成功", userVo);
     }
 
     @Override
