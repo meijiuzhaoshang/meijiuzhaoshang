@@ -18,4 +18,6 @@ public interface RegionService extends IService<Region> {
     ResultVo selectAll();
     //展示二级地区信息
     ResultVo selectAllSecondRegion();
+    //根据指定地区id展示公司
+    ResultVo selectComById(int id);
 }

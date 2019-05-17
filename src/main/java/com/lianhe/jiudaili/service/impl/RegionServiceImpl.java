@@ -1,6 +1,7 @@
 package com.lianhe.jiudaili.service.impl;
 
 
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lianhe.jiudaili.dao.RegionMapper;
@@ -62,5 +63,10 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
             }
         }
         return ResultUtil.exec(true, "查询成功", secondRegions);
+    }
+
+    @Override
+    public ResultVo selectComById(int id) {
+        return null;
     }
 }
