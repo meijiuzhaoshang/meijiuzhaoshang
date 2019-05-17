@@ -41,7 +41,7 @@ public class TasteServiceImpl extends ServiceImpl<TasteMapper, Taste> implements
     @Override
     public ResultVo selectById(int id) {
         List<Company> coms = new ArrayList<>();
-        List<CompanyTaste> companyTastes = companyTasteMapper.selectList(new QueryWrapper<CompanyTaste>().eq("bid", id));
+        List<CompanyTaste> companyTastes = companyTasteMapper.selectList(new QueryWrapper<CompanyTaste>().eq("tid", id));
         for (CompanyTaste companyTaste:companyTastes) {
             coms.add(companyMapper.selectById(companyTaste.getCid()));
         }

@@ -43,7 +43,7 @@ public class InvestServiceImpl extends ServiceImpl<InvestMapper, Invest> impleme
     @Override
     public ResultVo selectById(int id) {
         List<Company> coms = new ArrayList<>();
-        List<CompanyInvest> companyInvests = companyInvestMapper.selectList(new QueryWrapper<CompanyInvest>().eq("bid", id));
+        List<CompanyInvest> companyInvests = companyInvestMapper.selectList(new QueryWrapper<CompanyInvest>().eq("lid", id));
         for (CompanyInvest companyInvest:companyInvests) {
             coms.add(companyMapper.selectById(companyInvest.getCid()));
         }

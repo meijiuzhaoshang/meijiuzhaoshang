@@ -40,7 +40,7 @@ public class PriceServiceImpl extends ServiceImpl<PriceMapper, Price> implements
     @Override
     public ResultVo selectById(int id) {
         List<Company> coms = new ArrayList<>();
-        List<CompanyPrice> companyPrices = companyPriceMapper.selectList(new QueryWrapper<CompanyPrice>().eq("bid", id));
+        List<CompanyPrice> companyPrices = companyPriceMapper.selectList(new QueryWrapper<CompanyPrice>().eq("vid", id));
         for (CompanyPrice companyPrice:companyPrices) {
             coms.add(companyMapper.selectById(companyPrice.getCid()));
         }

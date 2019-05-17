@@ -1,6 +1,7 @@
 package com.lianhe.jiudaili.controller;
 
 import com.lianhe.jiudaili.service.InvestService;
+import com.lianhe.jiudaili.service.PriceService;
 import com.lianhe.jiudaili.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,17 +24,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/jiudaili/price")
 public class PriceController {
     @Autowired
-    private InvestService investService;
+    private PriceService priceService;
 
     @GetMapping("/all.do")
     @ApiOperation(value = "展示所有价位")
     public ResultVo selectAll(){
-        return investService.selectAll();
+        return priceService.selectAll();
     }
 
     @PostMapping("/selectbyid.do")
     @ApiOperation(value = "根据指定的价位id展示所有公司")
     public ResultVo selectById(int id){
-        return investService.selectById(id);
+        return priceService.selectById(id);
     }
 }
