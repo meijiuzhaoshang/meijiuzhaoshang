@@ -1,0 +1,18 @@
+package com.lianhe.jiudaili.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * <p>
+ *  前端控制器
+ * </p>
+ *
+ * @author 酒代理---助攻冯志立
+ * @since 2019-05-17
+ */
+@RestController
+@RequestMapping("/jiudaili/companyArea")
+public class CompanyAreaController {
+	
+}
