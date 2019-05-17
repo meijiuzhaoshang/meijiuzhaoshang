@@ -1,5 +1,6 @@
 package com.lianhe.jiudaili.controller;
 
+import com.lianhe.jiudaili.service.CompanyHomepageService;
 import com.lianhe.jiudaili.service.CompanyService;
 import com.lianhe.jiudaili.vo.ResultVo;
 import io.swagger.annotations.Api;
@@ -24,11 +25,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CompanyController {
 	@Autowired
     private CompanyService companyService;
+	@Autowired
+    private CompanyHomepageService companyHomepageService;
 
 	@GetMapping("/all.do")
     @ApiOperation(value = "展示首页部分公司头像")
     public ResultVo selectAll(){
 	    return companyService.selectAll();
+    }
+
+    @GetMapping("/newproducts.do")
+    @ApiOperation(value = "展示畅销新品公司图片")
+    public ResultVo selectAllNew(){
+	    return companyHomepageService.selectAll();
     }
 
     @PostMapping("/selectbyid.do")
