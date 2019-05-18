@@ -40,7 +40,7 @@ public class TokenUtil {
         return EncryptionUtil.AESEnc(SystemCon.TOKENKEY, JSON.toJSONString(tokenVO));
     }
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         int c1 = 0;
         int c2 = 0;
         int c3 = 0;
@@ -69,8 +69,7 @@ public class TokenUtil {
         if (c1 == 0 && c2 == 0 && c3 == 0) {
             System.out.println("ok");
         }
-    }
-    /*
+    }*/
     public static void main(String[] args) {
         String shijie = createToken(2, "shijie");
         System.out.println(shijie);
@@ -79,5 +78,5 @@ public class TokenUtil {
         System.out.println(tokenVO.getContent());
         System.out.println(tokenVO.getDate());
         System.out.println(tokenVO.getRandom());
-    }*/
+    }
 }
