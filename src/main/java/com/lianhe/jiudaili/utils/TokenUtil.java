@@ -40,4 +40,43 @@ public class TokenUtil {
         return EncryptionUtil.AESEnc(SystemCon.TOKENKEY, JSON.toJSONString(tokenVO));
     }
 
+   /* public static void main(String[] args) {
+        int c1 = 0;
+        int c2 = 0;
+        int c3 = 0;
+        for (int i = 0; i < 10000; i++) {
+            String shijie = createToken(2, "shijie");
+            if (shijie.contains("/")) {
+                System.out.println("有/");
+                c1 += 1;
+            }
+            //System.out.println(shijie);
+            TokenVO tokenVO = parseToken(shijie);
+            if (tokenVO.getUid() != 2) {
+                System.out.println("!=2");
+                c2 += 1;
+            }
+            if (!tokenVO.getContent().equals("shijie")) {
+                System.out.println("!=shijie");
+                c3 += 1;
+            }
+
+            //System.out.println(tokenVO.getUid());
+            //System.out.println(tokenVO.getContent());
+            //System.out.println(tokenVO.getDate());
+            //System.out.println(tokenVO.getRandom());
+        }
+        if (c1 == 0 && c2 == 0 && c3 == 0) {
+            System.out.println("ok");
+        }
+    }*/
+    public static void main(String[] args) {
+        String shijie = createToken(2, "shijie");
+        System.out.println(shijie);
+        TokenVO tokenVO = parseToken(shijie);
+        System.out.println(tokenVO.getUid());
+        System.out.println(tokenVO.getContent());
+        System.out.println(tokenVO.getDate());
+        System.out.println(tokenVO.getRandom());
+    }
 }

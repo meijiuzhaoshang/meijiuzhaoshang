@@ -3,13 +3,16 @@ package com.lianhe.jiudaili.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lianhe.jiudaili.dao.UserDetailMapper;
 import com.lianhe.jiudaili.dao.UserRegisterMapper;
+import com.lianhe.jiudaili.entity.UserDetail;
 import com.lianhe.jiudaili.entity.UserRegister;
 import com.lianhe.jiudaili.service.UserRegisterService;
 import com.lianhe.jiudaili.utils.*;
 import com.lianhe.jiudaili.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -30,9 +33,13 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
     private UserRegisterMapper userRegisterMapper;
 
     @Autowired
+    private UserDetailMapper userDetailMapper;
+
+    @Autowired
     private JedisUtil jedisUtil;
 
     @Override
+    @Transactional
     public ResultVo register(UserRegisterVo userRegisterVo) {
 
         UserRegister userRegister = new UserRegister();
@@ -56,8 +63,10 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
         if (userRegister.selectOne(queryWrapper2) != null) {
             return ResultUtil.exec(false, "注册失败，该手机号已被注册过，请勿重复注册", null);
         }
-
-        return ResultUtil.exec(userRegisterMapper.save(userRegister) > 0, "注册成功", null);
+        if (userRegisterMapper.save(userRegister) > 0) {
+            userDetailMapper.save(userRegister.getId());
+        }
+        return ResultUtil.exec(true, "注册成功", null);
     }
 
     /*
@@ -113,10 +122,10 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
                 userVo.setPhone(userRegister.getPhone());
                 userVo.setEmail(userRegister.getEmail());
                 userVo.setUserTypeNum(userRegister.getUserType());
-                if (userRegister.getUserType()==1){
+                if (userRegister.getUserType() == 1) {
                     //1 表示厂家 2 表示经销商
                     userVo.setUserType("厂家");
-                }else if(userRegister.getUserType()==2) {
+                } else if (userRegister.getUserType() == 2) {
                     userVo.setUserType("经销商");
                 }
                 userVo.setCreatetime(userRegister.getCreatetime());
@@ -141,6 +150,14 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
             }
         }*/
         //删除Redis
+        String json = jedisUtil.getStr(token);
+        UserRegister userRegister = JSON.parseObject(json, UserRegister.class);
+        UserVo userVo = new UserVo();
+        userVo.setId(userRegister.getId());
+        userVo.setUserName(userRegister.getUserName());
+        userVo.setPhone(userRegister.getPhone());
+        userVo.setEmail(userRegister.getEmail());
+        userVo.setUserTypeNum(userRegister.getUserType());
         jedisUtil.delKey(token);
         TokenVO tokenVO = TokenUtil.parseToken(token);
         jedisUtil.delKey("user:" + tokenVO.getContent());
@@ -148,7 +165,7 @@ public class UserRegisterServiceImpl extends ServiceImpl<UserRegisterMapper, Use
         Cookie cookie = new Cookie("usertoken", "");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        return ResultUtil.setOK("注销成功");
+        return ResultUtil.exec(true, "注销成功", userVo);
     }
 
     @Override
